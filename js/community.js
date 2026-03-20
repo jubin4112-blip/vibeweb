@@ -45,13 +45,16 @@ async function loadPosts(page = 1) {
   const from = (page - 1) * PAGE_SIZE;
   const to   = from + PAGE_SIZE - 1;
 
+  const isFreeTab = activeCategory === '자유';
+  const table = isFreeTab ? 'free_posts' : 'community_posts';
+
   let query = sb
-    .from('community_posts')
+    .from(table)
     .select('*', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range(from, to);
 
-  if (activeCategory) {
+  if (!isFreeTab && activeCategory) {
     query = query.eq('category', activeCategory);
   }
 
@@ -81,8 +84,9 @@ async function loadPosts(page = 1) {
     `;
   }).join('');
 
+  const isFree = activeCategory === '자유';
   tbody.querySelectorAll('tr[data-id]').forEach(row => {
-    row.addEventListener('click', () => openPost(row.dataset.id));
+    row.addEventListener('click', () => openPost(row.dataset.id, isFree));
   });
 
   renderPagination(count);
@@ -115,8 +119,9 @@ document.getElementById('category-tabs').addEventListener('click', (e) => {
 });
 
 // ===== 상세 보기 =====
-async function openPost(postId) {
-  const { data, error } = await sb.from('community_posts').select('*').eq('id', postId).single();
+async function openPost(postId, isFree = false) {
+  const table = isFree ? 'free_posts' : 'community_posts';
+  const { data, error } = await sb.from(table).select('*').eq('id', postId).single();
   if (error || !data) { alert('글을 불러올 수 없습니다.'); return; }
 
   currentPost = data;
