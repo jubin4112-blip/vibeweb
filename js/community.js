@@ -23,9 +23,7 @@ function formatDate(str) {
 }
 
 function maskEmail(email) {
-  const [id, domain] = email.split('@');
-  if (id.length <= 2) return `${id[0]}*@${domain}`;
-  return `${id.slice(0, 2)}${'*'.repeat(Math.min(id.length - 2, 4))}@${domain}`;
+  return email.split('@')[0];
 }
 
 function escapeHtml(str) {
