@@ -272,6 +272,30 @@ document.getElementById('form-signup').addEventListener('submit', async e => {
   }
 });
 
+// ===== 자유게시판 최근 글 =====
+async function loadRecentFreePosts() {
+  const list = document.getElementById('recent-free-list');
+  const { data, error } = await sb
+    .from('free_posts')
+    .select('id, title, created_at')
+    .order('created_at', { ascending: false })
+    .limit(5);
+
+  if (error || !data || data.length === 0) {
+    list.innerHTML = '<li class="recent-free-loading">게시글이 없습니다.</li>';
+    return;
+  }
+
+  list.innerHTML = data.map(post => `
+    <li>
+      <a href="./free-board.html">
+        <span class="rf-title">${escapeHtml(post.title)}</span>
+        <span class="rf-date">${formatDate(post.created_at)}</span>
+      </a>
+    </li>
+  `).join('');
+}
+
 // ===== 초기화 =====
 async function init() {
   const { data: { session } } = await sb.auth.getSession();
@@ -283,6 +307,7 @@ async function init() {
   logoutBtn.style.display = currentUser ? 'inline-block' : 'none';
 
   loadPosts(1);
+  loadRecentFreePosts();
 }
 
 init();
