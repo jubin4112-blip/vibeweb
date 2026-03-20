@@ -45,37 +45,70 @@ async function loadPosts(page = 1) {
   const from = (page - 1) * PAGE_SIZE;
   const to   = from + PAGE_SIZE - 1;
 
-  const isFreeTab = activeCategory === '자유';
-  const table = isFreeTab ? 'free_posts' : 'community_posts';
+  let posts, totalCount;
 
-  let query = sb
-    .from(table)
-    .select('*', { count: 'exact' })
-    .order('created_at', { ascending: false })
-    .range(from, to);
+  if (activeCategory === '') {
+    // 전체: free_posts + community_posts 합산
+    const fetchLimit = to + 1;
+    const [freeRes, commRes] = await Promise.all([
+      sb.from('free_posts').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(0, fetchLimit),
+      sb.from('community_posts').select('*', { count: 'exact' }).order('created_at', { ascending: false }).range(0, fetchLimit),
+    ]);
 
-  if (!isFreeTab && activeCategory) {
-    query = query.eq('category', activeCategory);
+    if (freeRes.error || commRes.error) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">글을 불러오지 못했습니다.</td></tr>';
+      return;
+    }
+
+    totalCount = (freeRes.count || 0) + (commRes.count || 0);
+
+    const freeData = (freeRes.data || []).map(p => ({ ...p, _isFree: true }));
+    const commData = (commRes.data || []).map(p => ({ ...p, _isFree: false }));
+
+    const merged = [...freeData, ...commData]
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    posts = merged.slice(from, from + PAGE_SIZE);
+  } else if (activeCategory === '자유') {
+    const { data, error, count } = await sb
+      .from('free_posts')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to);
+
+    if (error) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">글을 불러오지 못했습니다.</td></tr>';
+      return;
+    }
+    posts = (data || []).map(p => ({ ...p, _isFree: true }));
+    totalCount = count;
+  } else {
+    const { data, error, count } = await sb
+      .from('community_posts')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(from, to)
+      .eq('category', activeCategory);
+
+    if (error) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">글을 불러오지 못했습니다.</td></tr>';
+      return;
+    }
+    posts = (data || []).map(p => ({ ...p, _isFree: false }));
+    totalCount = count;
   }
 
-  const { data, error, count } = await query;
-
-  if (error) {
-    tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">글을 불러오지 못했습니다.</td></tr>';
-    return;
-  }
-
-  if (!data || data.length === 0) {
+  if (!posts || posts.length === 0) {
     tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">아직 게시글이 없습니다. 첫 글을 작성해보세요!</td></tr>';
     renderPagination(0);
     return;
   }
 
-  tbody.innerHTML = data.map((post, idx) => {
-    const num   = count - from - idx;
+  tbody.innerHTML = posts.map((post, idx) => {
+    const num   = totalCount - from - idx;
     const badge = `<span class="category-badge cat-${post.category}">${escapeHtml(post.category)}</span>`;
     return `
-      <tr data-id="${post.id}">
+      <tr data-id="${post.id}" data-is-free="${post._isFree}">
         <td class="col-num">${num}</td>
         <td>${badge} <span class="post-title-link">${escapeHtml(post.title)}</span></td>
         <td class="col-author">${maskEmail(post.user_email)}</td>
@@ -84,12 +117,11 @@ async function loadPosts(page = 1) {
     `;
   }).join('');
 
-  const isFree = activeCategory === '자유';
   tbody.querySelectorAll('tr[data-id]').forEach(row => {
-    row.addEventListener('click', () => openPost(row.dataset.id, isFree));
+    row.addEventListener('click', () => openPost(row.dataset.id, row.dataset.isFree === 'true'));
   });
 
-  renderPagination(count);
+  renderPagination(totalCount);
 }
 
 // ===== 페이지네이션 =====
