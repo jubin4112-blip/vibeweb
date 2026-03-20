@@ -116,7 +116,7 @@ async function openPost(postId) {
   badge.className    = `post-category-badge cat-${data.category}`;
 
   document.getElementById('detail-title').textContent   = data.title;
-  document.getElementById('detail-author').textContent  = `작성자: ${maskEmail(data.user_email)}`;
+  document.getElementById('detail-author').textContent  = `작성자: ${data.user_email.split('@')[0]}`;
   document.getElementById('detail-date').textContent    = formatDate(data.created_at);
   document.getElementById('detail-content').textContent = data.content;
 
