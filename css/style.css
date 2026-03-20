@@ -9,11 +9,11 @@
   --primary: #6C63FF;
   --primary-dark: #4B44CC;
   --accent: #00D4FF;
-  --bg: #0A0A0F;
-  --bg-card: #13131F;
-  --bg-section: #0F0F1A;
-  --text: #F0F0F0;
-  --text-muted: #888;
+  --bg: #e8f8f5;
+  --bg-card: #d0f0ea;
+  --bg-section: #daf4ee;
+  --text: #1a3c34;
+  --text-muted: #4a7c6f;
   --border: rgba(108, 99, 255, 0.2);
   --font: 'Noto Sans KR', sans-serif;
   --radius: 12px;
