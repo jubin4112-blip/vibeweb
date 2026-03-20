@@ -75,7 +75,7 @@ async function loadPosts(page = 1) {
       <tr data-id="${post.id}">
         <td class="col-num">${num}</td>
         <td>${badge} <span class="post-title-link">${escapeHtml(post.title)}</span></td>
-        <td class="col-author">${maskEmail(post.user_email)}</td>
+        <td class="col-author">${post.user_email.split('@')[0]}</td>
         <td><span class="date-text">${formatDate(post.created_at)}</span></td>
       </tr>
     `;
