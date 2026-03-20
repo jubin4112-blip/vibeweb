@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 바이브웹 - 바이브코딩으로 풀스택 개발</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">AI바이브웹</a>
+      <ul class="nav-links">
+        <li><a href="#about">소개</a></li>
+        <li><a href="#curriculum">커리큘럼</a></li>
+        <li><a href="#stack">기술스택</a></li>
+        <li><a href="#effects">기대효과</a></li>
+        <li><a href="./pages/free-board.html">자유게시판</a></li>
+        <li><a href="./pages/community.html">커뮤니티</a></li>
+        <li><a href="#" id="nav-login-btn" class="btn-nav">로그인</a></li>
+        <li><a href="#" id="nav-logout-btn" class="btn-nav" style="display:none;">로그아웃</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-badge">🚀 AI 시대의 새로운 개발 방식</p>
+      <h1 class="hero-title">
+        <span class="highlight">바이브코딩</span>으로<br />
+        풀스택 웹 개발을 경험하다
+      </h1>
+      <p class="hero-desc">
+        AI와 대화하며 즉각적으로 구현하는 바이브코딩.<br />
+        전통적 학습 대비 1/5의 시간으로 실무급 프로젝트를 완성하세요.
+      </p>
+      <div class="hero-btns">
+        <button class="btn-primary" id="cta-btn">무료로 시작하기</button>
+        <a href="#about" class="btn-outline">자세히 알아보기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="section-title fade-up">
+        <h2>바이브코딩이란 <span>무엇인가요?</span></h2>
+        <p style="margin-top:0.8rem;">"Vibe(분위기, 감각) + Coding" — 직관적이고 자연스러운 흐름으로 코딩하는 방식</p>
+      </div>
+
+      <div class="compare-grid fade-up">
+        <div class="compare-card">
+          <h3>일반 코딩</h3>
+          <ul>
+            <li>문법 암기</li>
+            <li>코드 직접 작성</li>
+            <li>디버깅</li>
+            <li>결과 확인</li>
+            <li>긴 학습 곡선</li>
+          </ul>
+        </div>
+        <div class="compare-card vibe">
+          <h3>✨ 바이브코딩</h3>
+          <ul>
+            <li>AI와 대화</li>
+            <li>즉각적 구현</li>
+            <li>빠른 수정</li>
+            <li>실시간 결과 확인</li>
+            <li>짧은 학습 곡선</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="outlook-grid fade-up">
+        <div class="outlook-item">
+          <div class="icon">📈</div>
+          <h3>업계 표준화</h3>
+          <p>AI 보조 개발이 업계 표준으로 자리잡는 추세</p>
+        </div>
+        <div class="outlook-item">
+          <div class="icon">🧠</div>
+          <h3>역할의 진화</h3>
+          <p>개발자가 "코드 작성자"에서 "기획자·관리자"로 진화</p>
+        </div>
+        <div class="outlook-item">
+          <div class="icon">🌍</div>
+          <h3>비전공자도 가능</h3>
+          <p>비전공자도 실무급 프로젝트를 구현할 수 있는 시대</p>
+        </div>
+        <div class="outlook-item">
+          <div class="icon">⚡</div>
+          <h3>빠른 프로토타이핑</h3>
+          <p>아이디어를 즉시 제품으로 구현하는 최적의 방법론</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CURRICULUM ===== -->
+  <section id="curriculum">
+    <div class="container">
+      <div class="section-title fade-up">
+        <h2>단계별 <span>커리큘럼</span></h2>
+        <p style="margin-top:0.8rem;">기초부터 모바일 앱까지, 체계적인 학습 과정</p>
+      </div>
+
+      <div class="curriculum-grid fade-up">
+        <div class="curriculum-card basic">
+          <span class="tag">기초 과정</span>
+          <h3>웹 개발 기초</h3>
+          <ul>
+            <li>포트폴리오 웹사이트 제작</li>
+            <li>로그인 / 회원가입 기능 구현</li>
+            <li>게시판 CRUD 기능 개발</li>
+            <li>실무 배포 프로세스 (Vercel)</li>
+          </ul>
+        </div>
+        <div class="curriculum-card advanced">
+          <span class="tag">심화 과정</span>
+          <h3>모바일 앱 개발</h3>
+          <ul>
+            <li>React Native + Expo 활용</li>
+            <li>SNS 기능 구현</li>
+            <li>카메라 연동</li>
+            <li>앱스토어 배포</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TECH STACK ===== -->
+  <section id="stack">
+    <div class="container">
+      <div class="section-title fade-up">
+        <h2>사용하는 <span>기술스택</span></h2>
+      </div>
+
+      <div class="stack-grid fade-up">
+        <div class="stack-item">
+          <div class="icon">🌐</div>
+          <span>HTML5</span>
+        </div>
+        <div class="stack-item">
+          <div class="icon">🎨</div>
+          <span>CSS3</span>
+        </div>
+        <div class="stack-item">
+          <div class="icon">⚡</div>
+          <span>JavaScript</span>
+        </div>
+        <div class="stack-item">
+          <div class="icon">🗄️</div>
+          <span>Supabase</span>
+        </div>
+        <div class="stack-item">
+          <div class="icon">▲</div>
+          <span>Vercel</span>
+        </div>
+        <div class="stack-item">
+          <div class="icon">🐙</div>
+          <span>GitHub</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS ===== -->
+  <section id="effects">
+    <div class="container">
+      <div class="section-title fade-up">
+        <h2>학습 후 <span>기대효과</span></h2>
+      </div>
+
+      <div class="effects-grid fade-up">
+        <div class="effect-card">
+          <div class="num">01</div>
+          <h3>프로젝트 전체 흐름 이해</h3>
+          <p>기획부터 배포까지 전 과정을 경험하며 각 기술이 어떻게 연결되는지 구조적으로 이해</p>
+        </div>
+        <div class="effect-card">
+          <div class="num">02</div>
+          <h3>AI 도구 활용 능력</h3>
+          <p>Claude Code와 효과적으로 협업하는 프롬프팅 능력 및 에러 해결 실무 역량</p>
+        </div>
+        <div class="effect-card">
+          <div class="num">03</div>
+          <h3>1/5 시간, 높은 완성도</h3>
+          <p>전통적 학습 대비 훨씬 짧은 시간으로 실무급 프로젝트 완성 가능</p>
+        </div>
+        <div class="effect-card">
+          <div class="num">04</div>
+          <h3>실전 포트폴리오 확보</h3>
+          <p>취업·이직에 사용 가능한 실제 배포된 웹사이트와 GitHub 저장소 경험</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section id="cta">
+    <div class="container">
+      <h2>지금 바로 시작해보세요</h2>
+      <p>바이브코딩으로 빠르게 프로젝트를 제작하며<br />AI 시대의 실용적 개발 역량에 도전해보세요.</p>
+      <button class="btn-primary" id="cta-btn2" onclick="document.getElementById('cta-btn').click()">무료로 시작하기</button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <p>© 2025 AI바이브웹. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== LOGIN MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="login-form">
+      <button class="modal-close">✕</button>
+      <h3>로그인</h3>
+      <form id="form-login">
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="login-email" placeholder="example@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <input type="password" id="login-password" placeholder="비밀번호 입력" required />
+        </div>
+        <button type="submit" class="btn-submit">로그인</button>
+        <p class="msg" id="login-msg"></p>
+      </form>
+      <p class="modal-switch">계정이 없으신가요? <a id="go-signup">회원가입</a></p>
+    </div>
+
+    <div class="modal" id="signup-form" style="display:none;">
+      <button class="modal-close">✕</button>
+      <h3>회원가입</h3>
+      <form id="form-signup">
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="signup-email" placeholder="example@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <input type="password" id="signup-password" placeholder="6자 이상 입력" required minlength="6" />
+        </div>
+        <button type="submit" class="btn-submit">가입하기</button>
+        <p class="msg" id="signup-msg"></p>
+      </form>
+      <p class="modal-switch">이미 계정이 있으신가요? <a id="go-login">로그인</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

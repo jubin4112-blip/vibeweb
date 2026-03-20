@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>자유게시판 - AI바이브웹</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/board.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">AI바이브웹</a>
+      <ul class="nav-links">
+        <li><a href="../index.html#about">소개</a></li>
+        <li><a href="../index.html#curriculum">커리큘럼</a></li>
+        <li><a href="../index.html#stack">기술스택</a></li>
+        <li><a href="./free-board.html" class="active">자유게시판</a></li>
+        <li><a href="./community.html">커뮤니티</a></li>
+        <li><a href="#" id="nav-login-btn" class="btn-nav">로그인</a></li>
+        <li><a href="#" id="nav-logout-btn" class="btn-nav" style="display:none;">로그아웃</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="board-main">
+    <div class="container">
+
+      <!-- 목록 뷰 -->
+      <div id="view-list">
+        <div class="board-header">
+          <h2>자유 <span>게시판</span></h2>
+          <button class="btn-primary" id="btn-write">글쓰기</button>
+        </div>
+
+        <div class="board-search">
+          <input type="text" id="search-input" placeholder="제목으로 검색..." />
+          <button id="search-btn">검색</button>
+        </div>
+
+        <div class="board-table-wrap">
+          <table class="board-table">
+            <thead>
+              <tr>
+                <th class="col-num">번호</th>
+                <th>제목</th>
+                <th class="col-author">작성자</th>
+                <th class="col-date">날짜</th>
+              </tr>
+            </thead>
+            <tbody id="post-list">
+              <tr><td colspan="4" class="empty-msg">불러오는 중...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="board-pagination" id="pagination"></div>
+      </div>
+
+      <!-- 글쓰기 뷰 -->
+      <div id="view-write" style="display:none;">
+        <div class="board-header">
+          <h2 id="write-heading">글쓰기</h2>
+          <button class="btn-outline" id="btn-cancel">목록으로</button>
+        </div>
+
+        <form class="write-form" id="form-write">
+          <div class="form-group">
+            <label>카테고리</label>
+            <select id="input-category">
+              <option value="일반">일반</option>
+              <option value="질문">질문</option>
+              <option value="정보">정보</option>
+              <option value="후기">후기</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>제목</label>
+            <input type="text" id="input-title" placeholder="제목을 입력해주세요" required />
+          </div>
+          <div class="form-group">
+            <label>내용</label>
+            <textarea id="input-content" rows="12" placeholder="내용을 입력해주세요" required></textarea>
+          </div>
+          <div class="write-actions">
+            <button type="button" class="btn-outline" id="btn-cancel2" style="margin-right:0.7rem;">취소</button>
+            <button type="submit" class="btn-primary" id="btn-submit">등록하기</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 상세 뷰 -->
+      <div id="view-detail" style="display:none;">
+        <div class="board-header">
+          <button class="btn-outline" id="btn-back">← 목록으로</button>
+          <div class="detail-actions" id="detail-actions" style="display:none;">
+            <button class="btn-edit" id="btn-edit">수정</button>
+            <button class="btn-delete" id="btn-delete">삭제</button>
+          </div>
+        </div>
+
+        <div class="post-detail">
+          <span id="detail-category" class="post-category-badge"></span>
+          <h2 id="detail-title"></h2>
+          <div class="post-meta">
+            <span id="detail-author"></span>
+            <span id="detail-date"></span>
+          </div>
+          <div class="post-content" id="detail-content"></div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== LOGIN MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="login-form">
+      <button class="modal-close">✕</button>
+      <h3>로그인</h3>
+      <form id="form-login">
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="login-email" placeholder="example@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <input type="password" id="login-password" placeholder="비밀번호 입력" required />
+        </div>
+        <button type="submit" class="btn-submit">로그인</button>
+        <p class="msg" id="login-msg"></p>
+      </form>
+      <p class="modal-switch">계정이 없으신가요? <a id="go-signup">회원가입</a></p>
+    </div>
+
+    <div class="modal" id="signup-form" style="display:none;">
+      <button class="modal-close">✕</button>
+      <h3>회원가입</h3>
+      <form id="form-signup">
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" id="signup-email" placeholder="example@email.com" required />
+        </div>
+        <div class="form-group">
+          <label>비밀번호</label>
+          <input type="password" id="signup-password" placeholder="6자 이상 입력" required minlength="6" />
+        </div>
+        <button type="submit" class="btn-submit">가입하기</button>
+        <p class="msg" id="signup-msg"></p>
+      </form>
+      <p class="modal-switch">이미 계정이 있으신가요? <a id="go-login">로그인</a></p>
+    </div>
+  </div>
+
+  <script type="module" src="../js/free-board.js"></script>
+</body>
+</html>
