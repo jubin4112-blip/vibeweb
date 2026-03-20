@@ -109,6 +109,55 @@ nav {
 
 .btn-nav:hover { background: var(--primary-dark) !important; }
 
+/* ===== NAV DROPDOWN ===== */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown > a {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nav-dropdown > a::after {
+  content: '▾';
+  font-size: 0.75rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.8rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(19, 19, 31, 0.97);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0;
+  min-width: 130px;
+  z-index: 9999;
+  backdrop-filter: blur(12px);
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.88rem;
+  color: var(--text-muted) !important;
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+}
+
+.dropdown-menu a:hover {
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--text) !important;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 /* ===== HERO ===== */
 #hero {
   min-height: 100vh;
